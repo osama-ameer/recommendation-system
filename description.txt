@@ -1,0 +1,24 @@
+# Deploy using conda env
+
+# Create conda ENV
+conda create --name env_name -y
+
+# Activate
+conda activate env_name
+
+conda config --add channels conda-forge
+conda config --set channel_priority flexible
+
+conda install python django django-heroku python-decouple
+conda install -c conda-forge scikit-surprise
+conda install -c conda-forge djangorestframework
+
+# Create yml for heroku deployment
+conda env export > environment.yml --name env_name
+
+open environment.yml > add > gunicorn=20.1.0
+
+remove =pyha770c72_0 from typing_extensions=4.1.1=pyha770c72_0 where required
+
+# Use conda build-pack for heroku app
+heroku buildpacks:set https://github.com/pl31/heroku-buildpack-conda --app Heroku_APP_Name
